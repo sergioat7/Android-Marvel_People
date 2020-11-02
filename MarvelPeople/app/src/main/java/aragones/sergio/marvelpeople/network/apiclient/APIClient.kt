@@ -3,7 +3,7 @@
  * Created by Sergio Aragonés on 2/11/2020
  */
 
-package aragones.sergio.marvelpeople.network
+package aragones.sergio.marvelpeople.network.apiclient
 
 import aragones.sergio.marvelpeople.utils.Constants
 import okhttp3.OkHttpClient

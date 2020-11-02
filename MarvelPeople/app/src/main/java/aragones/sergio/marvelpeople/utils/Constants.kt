@@ -18,13 +18,20 @@ class Constants {
         const val CONNECT_TIMEOUT: Long = 60
         const val READ_TIMEOUT: Long = 30
         const val WRITE_TIMEOUT: Long = 15
-        const val API_KEY_PARAM = "apikey";
-        const val TS_PARAM = "ts";
-        const val HASH_PARAM = "hash";
-        const val LIMIT_PARAM = "limit";
-        const val OFFSET_PARAM = "offset";
-        const val NAME_STARTS_WITH_PARAM = "nameStartsWith";
+        const val LIMIT_PARAM = "limit"
+        const val OFFSET_PARAM = "offset"
+        const val NAME_STARTS_WITH_PARAM = "nameStartsWith"
+        const val LIMIT = 20
         val SUBSCRIBER_SCHEDULER: Scheduler = Schedulers.io()
         val OBSERVER_SCHEDULER: Scheduler = AndroidSchedulers.mainThread()
+
+        fun getDefaultQueryParams(): MutableMap<String, String> {
+
+            val queryParams: MutableMap<String, String> = HashMap()
+            queryParams["apikey"] = "5ed58006f51feb029d1240da98b047c6"
+            queryParams["ts"] = "1"
+            queryParams["hash"] = "050b4ab4753325c5f5b3538c50e5c4e7"
+            return queryParams
+        }
     }
 }
