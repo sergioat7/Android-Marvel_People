@@ -1,3 +1,10 @@
 <resources>
+
     <string name="app_name">Marvel People</string>
+    <string name="marvel_characters">Marvel Characters</string>
+    <string name="search_characters">Search characters</string>
+    <string name="more_info">More info</string>
+    <string name="error_server">There was an error on getting data. Please, try again</string>
+    <string name="error_button_accept">Accept</string>
+
 </resources>
