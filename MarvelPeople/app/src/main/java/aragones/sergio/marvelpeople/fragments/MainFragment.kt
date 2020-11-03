@@ -12,9 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import aragones.sergio.marvelpeople.R
+import aragones.sergio.marvelpeople.viewmodelfactories.MainViewModelFactory
 import aragones.sergio.marvelpeople.viewmodels.MainViewModel
 
-class MainFragment : Fragment() {
+class MainFragment: Fragment() {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -29,8 +30,15 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        initializeUI()
     }
 
+    //MARK: - Private methods
+
+    private fun initializeUI() {
+
+        val application = activity?.application ?: return
+        viewModel = ViewModelProvider(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
+        // TODO: Use the ViewModel
+    }
 }
