@@ -24,26 +24,28 @@ class MainViewModel @Inject constructor(
     //MARK: - Private properties
 
     private var page: Int = 1
-    private val _mainCharacters = MutableLiveData<List<CharacterResponse>>()
+    private val _mainCharacters = MutableLiveData<MutableList<CharacterResponse>>()
     private val _mainLoading = MutableLiveData<Boolean>()
     private val _mainError = MutableLiveData<ErrorResponse>()
 
     //MARK: - Public properties
 
-    val mainCharacters: LiveData<List<CharacterResponse>> = _mainCharacters
+    val mainCharacters: LiveData<MutableList<CharacterResponse>> = _mainCharacters
     val mainLoading: LiveData<Boolean> = _mainLoading
     val mainError: LiveData<ErrorResponse> = _mainError
 
     //MARK: - Public methods
 
-    fun getCharactersObserver(search: String?) {
+    fun getCharacters(search: String?) {
 
         _mainLoading.value = true
         mainRepository.getCharactersObserver(page, search).subscribeBy(
                 onSuccess = { charactersDataResponse ->
 
                     _mainLoading.value = false
-                    _mainCharacters.value = charactersDataResponse.data.results
+                    val currentValues = _mainCharacters.value ?: mutableListOf()
+                    currentValues.addAll(charactersDataResponse.data.results)
+                    _mainCharacters.value = currentValues
                 },
                 onError = { error ->
 
@@ -62,5 +64,11 @@ class MainViewModel @Inject constructor(
                     }
                 }
         )
+    }
+
+    fun reloadData() {
+
+        page = 1
+        _mainCharacters.value = mutableListOf()
     }
 }

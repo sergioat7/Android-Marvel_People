@@ -30,4 +30,36 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="CharacterCellTextContainer">
+        <item name="android:background">@color/white</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="CharacterCellName">
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CharacterCellDescription">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="CharacterCellMoreInfo">
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:text">@string/more_info</item>
+    </style>
+
 </resources>
