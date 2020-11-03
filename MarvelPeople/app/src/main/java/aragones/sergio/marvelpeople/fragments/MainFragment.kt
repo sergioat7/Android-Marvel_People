@@ -77,6 +77,16 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         }
         rvCharacters.layoutManager = LinearLayoutManager(requireContext())
         rvCharacters.adapter = charactersAdapter
+        rvCharacters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.getCharacters(null)
+                }
+            }
+        })
 
         viewModel.getCharacters(null)
     }
@@ -93,13 +103,7 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         })
 
         viewModel.mainLoading.observe(requireActivity(), { isLoading ->
-
             srlCharacters.isRefreshing = isLoading
-            if (isLoading) {
-                //TODO show loading
-            } else {
-                //TODO hide loading
-            }
         })
 
         viewModel.mainError.observe(requireActivity(), { error ->

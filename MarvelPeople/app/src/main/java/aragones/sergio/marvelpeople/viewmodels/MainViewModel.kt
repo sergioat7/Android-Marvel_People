@@ -42,6 +42,7 @@ class MainViewModel @Inject constructor(
         mainRepository.getCharactersObserver(page, search).subscribeBy(
                 onSuccess = { charactersDataResponse ->
 
+                    page++
                     _mainLoading.value = false
                     val currentValues = _mainCharacters.value ?: mutableListOf()
                     currentValues.addAll(charactersDataResponse.data.results)
