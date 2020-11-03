@@ -5,12 +5,62 @@
 
 package aragones.sergio.marvelpeople.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import aragones.sergio.marvelpeople.R
+import aragones.sergio.marvelpeople.models.CharacterResponse
+import aragones.sergio.marvelpeople.models.ErrorResponse
+import aragones.sergio.marvelpeople.network.apiclient.APIClient
 import aragones.sergio.marvelpeople.repositories.MainRepository
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
         private val mainRepository: MainRepository
 ): ViewModel() {
-    // TODO: Implement the ViewModel
+
+    //MARK: - Private properties
+
+    private var page: Int = 1
+    private val _mainCharacters = MutableLiveData<List<CharacterResponse>>()
+    private val _mainLoading = MutableLiveData<Boolean>()
+    private val _mainError = MutableLiveData<ErrorResponse>()
+
+    //MARK: - Public properties
+
+    val mainCharacters: LiveData<List<CharacterResponse>> = _mainCharacters
+    val mainLoading: LiveData<Boolean> = _mainLoading
+    val mainError: LiveData<ErrorResponse> = _mainError
+
+    //MARK: - Public methods
+
+    fun getCharactersObserver(search: String?) {
+
+        _mainLoading.value = true
+        mainRepository.getCharactersObserver(page, search).subscribeBy(
+                onSuccess = { charactersDataResponse ->
+
+                    _mainLoading.value = false
+                    _mainCharacters.value = charactersDataResponse.data.results
+                },
+                onError = { error ->
+
+                    _mainLoading.value = false
+                    if (error is HttpException) {
+                        error.response()?.errorBody()?.let { errorBody ->
+
+                            _mainError.value = APIClient.gson.fromJson(
+                                    errorBody.charStream(), ErrorResponse::class.java
+                            )
+                        } ?: run {
+                            _mainError.value = ErrorResponse("", R.string.error_server)
+                        }
+                    } else {
+                        _mainError.value = ErrorResponse("", R.string.error_server)
+                    }
+                }
+        )
+    }
 }

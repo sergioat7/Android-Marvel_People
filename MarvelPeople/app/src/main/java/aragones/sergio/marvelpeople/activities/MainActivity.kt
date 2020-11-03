@@ -12,6 +12,8 @@ import aragones.sergio.marvelpeople.fragments.MainFragment
 
 class MainActivity: AppCompatActivity() {
 
+    //MARK: - Lifecycle methods
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)

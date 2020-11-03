@@ -17,11 +17,15 @@ import aragones.sergio.marvelpeople.viewmodels.MainViewModel
 
 class MainFragment: Fragment() {
 
+    //MARK: - Private properties
+
+    private lateinit var viewModel: MainViewModel
+
+    //MARK: - Lifecycle methods
+
     companion object {
         fun newInstance() = MainFragment()
     }
-
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -39,6 +43,28 @@ class MainFragment: Fragment() {
 
         val application = activity?.application ?: return
         viewModel = ViewModelProvider(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+        setupBindings()
+
+        viewModel.getCharactersObserver(null)
+    }
+
+    private fun setupBindings() {
+
+        viewModel.mainCharacters.observe(requireActivity(), { charactersResponse ->
+            //TODO manage characters
+        })
+
+        viewModel.mainLoading.observe(requireActivity(), { isLoading ->
+
+            if (isLoading) {
+                //TODO show loading
+            } else {
+                //TODO hide loading
+            }
+        })
+
+        viewModel.mainError.observe(requireActivity(), { error ->
+            //TODO manage error
+        })
     }
 }
