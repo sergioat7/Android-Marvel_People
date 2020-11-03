@@ -24,6 +24,7 @@ class MainViewModel @Inject constructor(
     //MARK: - Private properties
 
     private var page: Int = 1
+    private var search: String? = null
     private val _mainCharacters = MutableLiveData<MutableList<CharacterResponse>>()
     private val _mainLoading = MutableLiveData<Boolean>()
     private val _mainError = MutableLiveData<ErrorResponse>()
@@ -36,7 +37,7 @@ class MainViewModel @Inject constructor(
 
     //MARK: - Public methods
 
-    fun getCharacters(search: String?) {
+    fun getCharacters() {
 
         _mainLoading.value = true
         mainRepository.getCharactersObserver(page, search).subscribeBy(
@@ -71,5 +72,9 @@ class MainViewModel @Inject constructor(
 
         page = 1
         _mainCharacters.value = mutableListOf()
+    }
+
+    fun setSearch(search: String?) {
+        this.search = search
     }
 }

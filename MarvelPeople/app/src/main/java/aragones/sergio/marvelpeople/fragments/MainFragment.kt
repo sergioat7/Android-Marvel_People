@@ -5,10 +5,13 @@
 
 package aragones.sergio.marvelpeople.fragments
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import aragones.sergio.marvelpeople.fragments.base.BaseFragment
 import aragones.sergio.marvelpeople.viewmodelfactories.MainViewModelFactory
 import aragones.sergio.marvelpeople.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
+
 
 class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
 
@@ -39,6 +43,7 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
@@ -53,6 +58,16 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
 
         val params = mapOf("characterId" to characterId)
         //TODO go to character detail
+    }
+
+    //MARK: - Public methods
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        menu.clear()
+        inflater.inflate(R.menu.main_menu, menu)
+        setupSearchView(menu)
     }
 
     //MARK: - Private methods
@@ -73,7 +88,7 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         srlCharacters.setOnRefreshListener {
 
             viewModel.reloadData()
-            viewModel.getCharacters(null)
+            viewModel.getCharacters()
         }
         rvCharacters.layoutManager = LinearLayoutManager(requireContext())
         rvCharacters.adapter = charactersAdapter
@@ -83,12 +98,12 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.getCharacters(null)
+                    viewModel.getCharacters()
                 }
             }
         })
 
-        viewModel.getCharacters(null)
+        viewModel.getCharacters()
     }
 
     private fun setupBindings() {
@@ -109,5 +124,60 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         viewModel.mainError.observe(requireActivity(), { error ->
             manageError(error)
         })
+    }
+
+    private fun setupSearchView(menu: Menu) {
+
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
+        val searchView = menu.findItem(R.id.action_search).actionView as SearchView
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+            searchView.isIconified = false
+            searchView.isIconifiedByDefault = false
+            searchView.queryHint = resources.getString(R.string.search_characters)
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+
+                override fun onQueryTextChange(newText: String): Boolean {
+
+                    if (newText.isEmpty()) {
+                        searchCharacters(null)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+
+                    searchCharacters(query)
+                    return true
+                }
+            })
+        }
+        val searchPlateId =
+            searchView.context.resources.getIdentifier("android:id/search_plate", null, null)
+        val searchPlate = searchView.findViewById<View>(searchPlateId)
+        if (searchPlate != null) {
+            val searchTextId = searchPlate.context.resources.getIdentifier(
+                "android:id/search_src_text",
+                null,
+                null
+            )
+            val searchText = searchPlate.findViewById<TextView>(searchTextId)
+            if (searchText != null) {
+                searchText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+                searchText.setHintTextColor(
+                    ContextCompat.getColor(
+                        requireActivity(),
+                        R.color.white
+                    )
+                )
+            }
+        }
+    }
+
+    private fun searchCharacters(search: String?) {
+
+        viewModel.setSearch(search)
+        viewModel.reloadData()
+        viewModel.getCharacters()
     }
 }
