@@ -5,9 +5,11 @@
 
 package aragones.sergio.marvelpeople.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.view.inputmethod.InputMethodManager
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -69,6 +71,15 @@ class Constants {
                 imageDrawable.cornerRadius = imageBitmap.width.coerceAtLeast(imageBitmap.height) / 2.0f
             }
             return imageDrawable
+        }
+
+        fun hideSoftKeyboard(activity: Activity) {
+
+            activity.currentFocus?.let { currentFocus ->
+
+                val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+            } ?: return
         }
     }
 }

@@ -179,5 +179,6 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         viewModel.setSearch(search)
         viewModel.reloadData()
         viewModel.getCharacters()
+        Constants.hideSoftKeyboard(requireActivity())
     }
 }
