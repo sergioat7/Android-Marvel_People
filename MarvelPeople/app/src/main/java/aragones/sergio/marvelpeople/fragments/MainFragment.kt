@@ -12,10 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import aragones.sergio.marvelpeople.R
+import aragones.sergio.marvelpeople.fragments.base.BaseFragment
 import aragones.sergio.marvelpeople.viewmodelfactories.MainViewModelFactory
 import aragones.sergio.marvelpeople.viewmodels.MainViewModel
 
-class MainFragment: Fragment() {
+class MainFragment: BaseFragment() {
 
     //MARK: - Private properties
 
@@ -64,7 +65,7 @@ class MainFragment: Fragment() {
         })
 
         viewModel.mainError.observe(requireActivity(), { error ->
-            //TODO manage error
+            manageError(error)
         })
     }
 }

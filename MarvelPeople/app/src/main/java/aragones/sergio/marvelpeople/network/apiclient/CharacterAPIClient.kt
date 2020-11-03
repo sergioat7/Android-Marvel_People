@@ -19,8 +19,8 @@ class CharacterAPIClient {
         val queryParams: MutableMap<String, String> = Constants.getDefaultQueryParams()
         queryParams[Constants.LIMIT_PARAM] = Constants.LIMIT.toString()
         queryParams[Constants.OFFSET_PARAM] = ((page - 1) * Constants.LIMIT).toString()
-        search?.let {
-            queryParams[Constants.NAME_STARTS_WITH_PARAM] = it
+        if (!search.isNullOrBlank()) {
+            queryParams[Constants.NAME_STARTS_WITH_PARAM] = search
         }
 
         return api
