@@ -9,6 +9,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -19,10 +20,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import aragones.sergio.marvelpeople.R
 import aragones.sergio.marvelpeople.adapters.CharactersAdapter
 import aragones.sergio.marvelpeople.fragments.base.BaseFragment
+import aragones.sergio.marvelpeople.utils.Constants
 import aragones.sergio.marvelpeople.viewmodelfactories.MainViewModelFactory
 import aragones.sergio.marvelpeople.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
-
 
 class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
 
@@ -30,6 +31,7 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
 
     private lateinit var srlCharacters: SwipeRefreshLayout
     private lateinit var rvCharacters: RecyclerView
+    private lateinit var ivNoResults: ImageView
     private lateinit var viewModel: MainViewModel
     private lateinit var charactersAdapter: CharactersAdapter
 
@@ -77,6 +79,7 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         val application = activity?.application ?: return
         srlCharacters = swipe_refresh_layout_characters
         rvCharacters = recycler_view_characters
+        ivNoResults = image_view_no_results
         viewModel = ViewModelProvider(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
         charactersAdapter = CharactersAdapter(
             viewModel.mainCharacters.value ?: mutableListOf(),
@@ -111,9 +114,13 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
         viewModel.mainCharacters.observe(requireActivity(), { charactersResponse ->
 
             if (charactersResponse.isEmpty()) {
+
                 charactersAdapter.resetList()
+                ivNoResults.visibility = View.VISIBLE
             } else {
+
                 charactersAdapter.addCharacters(charactersResponse)
+                ivNoResults.visibility = View.GONE
             }
         })
 

@@ -30,6 +30,12 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="ImageNoResults">
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:src">@drawable/no_results_found</item>
+    </style>
+
     <style name="CharacterCellTextContainer">
         <item name="android:background">@color/white</item>
         <item name="android:orientation">vertical</item>
