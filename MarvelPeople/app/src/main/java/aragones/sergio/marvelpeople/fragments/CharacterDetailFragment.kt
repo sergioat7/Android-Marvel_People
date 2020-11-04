@@ -85,7 +85,7 @@ class CharacterDetailFragment: BaseFragment() {
 
     private fun setupData(characterResponse: CharacterResponse) {
 
-        val imageUrl = characterResponse.thumbnail.path + "." + characterResponse.thumbnail.extension
+        val imageUrl = Constants.getThumbnailUrl(characterResponse)
         Picasso
             .get()
             .load(imageUrl)

@@ -27,7 +27,7 @@ class CharactersViewHolder(
         val imageView = itemView.image_view_character
         val loading = itemView.progress_bar_loading
         loading.visibility = View.VISIBLE
-        val imageUrl = character.thumbnail.path + "." + character.thumbnail.extension
+        val imageUrl = Constants.getThumbnailUrl(character)
         Picasso
             .get()
             .load(imageUrl)

@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import aragones.sergio.marvelpeople.models.CharacterResponse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -50,6 +51,10 @@ class Constants {
             queryParams["hash"] = hash
 
             return queryParams
+        }
+
+        fun getThumbnailUrl(characterResponse: CharacterResponse): String {
+            return (characterResponse.thumbnail.path + "." + characterResponse.thumbnail.extension).replace("http", "https")
         }
 
         // MARK: - Character list
