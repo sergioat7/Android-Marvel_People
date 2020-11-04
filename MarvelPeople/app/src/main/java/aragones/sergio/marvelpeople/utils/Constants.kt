@@ -81,5 +81,9 @@ class Constants {
                 inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
             } ?: return
         }
+
+        // MARK: - Character detail
+
+        const val CHARACTER_ID = "characterId"
     }
 }

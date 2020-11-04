@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import aragones.sergio.marvelpeople.fragments.popups.PopupErrorDialogFragment
 import aragones.sergio.marvelpeople.models.ErrorResponse
+import java.io.Serializable
 
 open class BaseFragment: Fragment() {
 
@@ -36,9 +37,12 @@ open class BaseFragment: Fragment() {
         dialogFragment.show(ft, "popupDialog")
     }
 
-    fun <T> launchActivity(activity: Class<T>) {
+    fun <T> launchActivityWithExtras(activity: Class<T>, params: Map<String, Serializable>) {
 
         val intent = Intent(context, activity).apply {}
+        for (param in params) {
+            intent.putExtra(param.key, param.value)
+        }
         startActivity(intent)
     }
 }

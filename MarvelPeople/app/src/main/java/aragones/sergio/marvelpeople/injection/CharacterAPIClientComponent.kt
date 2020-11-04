@@ -5,6 +5,7 @@
 
 package aragones.sergio.marvelpeople.injection
 
+import aragones.sergio.marvelpeople.viewmodelfactories.CharacterDetailViewModelFactory
 import aragones.sergio.marvelpeople.viewmodelfactories.MainViewModelFactory
 import dagger.Component
 
@@ -12,4 +13,5 @@ import dagger.Component
 interface CharacterAPIClientComponent {
 
     fun inject(mainViewModelFactory: MainViewModelFactory)
+    fun inject(characterDetailViewModelFactory: CharacterDetailViewModelFactory)
 }
