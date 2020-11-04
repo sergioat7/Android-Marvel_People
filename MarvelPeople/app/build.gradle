@@ -9,6 +9,17 @@ def daggerVersion = "2.29.1"
 
 android {
 
+    signingConfigs {
+        release {
+            if (project.hasProperty('MARVEL_PEOPLE_STORE_FILE')) {
+                storeFile file(MARVEL_PEOPLE_STORE_FILE)
+                storePassword MARVEL_PEOPLE_STORE_PASSWORD
+                keyAlias MARVEL_PEOPLE_KEY_ALIAS
+                keyPassword MARVEL_PEOPLE_KEY_PASSWORD
+            }
+        }
+    }
+
     compileSdkVersion 29
     buildToolsVersion "30.0.0"
 
@@ -26,6 +37,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             applicationIdSuffix ".debug"
