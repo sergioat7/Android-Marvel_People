@@ -9,6 +9,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import aragones.sergio.marvelpeople.R
 import aragones.sergio.marvelpeople.fragments.base.BaseFragment
@@ -16,12 +19,19 @@ import aragones.sergio.marvelpeople.models.CharacterResponse
 import aragones.sergio.marvelpeople.utils.Constants
 import aragones.sergio.marvelpeople.viewmodelfactories.CharacterDetailViewModelFactory
 import aragones.sergio.marvelpeople.viewmodels.CharacterDetailViewModel
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.character_detail_fragment.*
 
 class CharacterDetailFragment: BaseFragment() {
 
     //MARK: - Private properties
 
     private var characterId: Int? = null
+    private lateinit var ivCharacter: ImageView
+    private lateinit var tvName: TextView
+    private lateinit var tvDescription: TextView
+    private lateinit var pbLoading: ProgressBar
     private lateinit var viewModel: CharacterDetailViewModel
 
     //MARK: - Lifecycle methods
@@ -50,6 +60,10 @@ class CharacterDetailFragment: BaseFragment() {
     private fun initializeUI() {
 
         val application = activity?.application ?: return
+        ivCharacter = image_view_character
+        tvName = text_view_name
+        tvDescription = text_view_description
+        pbLoading = progress_bar_loading
         viewModel = ViewModelProvider(this, CharacterDetailViewModelFactory(application)).get(CharacterDetailViewModel::class.java)
         setupBindings()
 
@@ -64,10 +78,6 @@ class CharacterDetailFragment: BaseFragment() {
             setupData(characterResponse)
         })
 
-        viewModel.characterDetailLoading.observe(requireActivity(), { isLoading ->
-            //TODO show/hide loading
-        })
-
         viewModel.characterDetailError.observe(requireActivity(), { error ->
             manageError(error)
         })
@@ -75,5 +85,25 @@ class CharacterDetailFragment: BaseFragment() {
 
     private fun setupData(characterResponse: CharacterResponse) {
 
+        val imageUrl = characterResponse.thumbnail.path + "." + characterResponse.thumbnail.extension
+        Picasso
+            .get()
+            .load(imageUrl)
+            .fit()
+            .centerCrop()
+            .error(R.drawable.no_image)
+            .into(ivCharacter, object: Callback {
+
+                override fun onSuccess() {
+                    pbLoading.visibility = View.GONE
+                }
+
+                override fun onError(e: Exception) {
+                    pbLoading.visibility = View.GONE
+                }
+            })
+
+        tvName.text = characterResponse.name
+        tvDescription.text = characterResponse.description
     }
 }

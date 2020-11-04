@@ -24,29 +24,23 @@ class CharacterDetailViewModel @Inject constructor(
     //MARK: - Private properties
 
     private val _characterDetailCharacter = MutableLiveData<CharacterResponse>()
-    private val _characterDetailLoading = MutableLiveData<Boolean>()
     private val _characterDetailError = MutableLiveData<ErrorResponse>()
 
     //MARK: - Public properties
 
     val characterDetailCharacter: LiveData<CharacterResponse> = _characterDetailCharacter
-    val characterDetailLoading: LiveData<Boolean> = _characterDetailLoading
     val characterDetailError: LiveData<ErrorResponse> = _characterDetailError
 
     //MARK: - Public methods
 
     fun getCharacter(characterId: Int) {
 
-        _characterDetailLoading.value = true
         characterDetailRepository.getCharacterObserver(characterId).subscribeBy(
             onSuccess = { charactersDataResponse ->
-
-                _characterDetailLoading.value = false
                 _characterDetailCharacter.value = charactersDataResponse.data.results[0]
             },
             onError = { error ->
 
-                _characterDetailLoading.value = false
                 if (error is HttpException) {
                     error.response()?.errorBody()?.let { errorBody ->
 
