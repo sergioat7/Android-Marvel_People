@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import aragones.sergio.marvelpeople.R
 import aragones.sergio.marvelpeople.fragments.base.BaseFragment
+import aragones.sergio.marvelpeople.models.CharacterResponse
 import aragones.sergio.marvelpeople.utils.Constants
 import aragones.sergio.marvelpeople.viewmodelfactories.CharacterDetailViewModelFactory
 import aragones.sergio.marvelpeople.viewmodels.CharacterDetailViewModel
@@ -50,6 +51,29 @@ class CharacterDetailFragment: BaseFragment() {
 
         val application = activity?.application ?: return
         viewModel = ViewModelProvider(this, CharacterDetailViewModelFactory(application)).get(CharacterDetailViewModel::class.java)
-        // TODO: Use the ViewModel
+        setupBindings()
+
+        characterId?.let {
+            viewModel.getCharacter(it)
+        }
+    }
+
+    private fun setupBindings() {
+
+        viewModel.characterDetailCharacter.observe(requireActivity(), { characterResponse ->
+            setupData(characterResponse)
+        })
+
+        viewModel.characterDetailLoading.observe(requireActivity(), { isLoading ->
+            //TODO show/hide loading
+        })
+
+        viewModel.characterDetailError.observe(requireActivity(), { error ->
+            manageError(error)
+        })
+    }
+
+    private fun setupData(characterResponse: CharacterResponse) {
+
     }
 }
