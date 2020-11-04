@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 Sergio Aragonés. All rights reserved.
+  ~ Created by Sergio Aragonés on 2/11/2020
+  -->
+
+<resources>
+
+    <string name="app_name">Marvel People</string>
+    <string name="marvel_characters">Personajes Marvel</string>
+    <string name="search_characters">Buscar personajes</string>
+    <string name="more_info">Más info</string>
+    <string name="error_server">Hubo un error al recuperar los datos. Por favor, inténtalo otra vez</string>
+    <string name="error_button_accept">Aceptar</string>
+
+</resources>
