@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import aragones.sergio.marvelpeople.R
+import aragones.sergio.marvelpeople.activities.CharacterDetailActivity
 import aragones.sergio.marvelpeople.adapters.CharactersAdapter
 import aragones.sergio.marvelpeople.fragments.base.BaseFragment
 import aragones.sergio.marvelpeople.utils.Constants
@@ -58,8 +59,8 @@ class MainFragment: BaseFragment(), CharactersAdapter.OnItemClickListener {
 
     override fun onItemClick(characterId: Int) {
 
-        val params = mapOf("characterId" to characterId)
-        //TODO go to character detail
+        val params = mapOf(Constants.CHARACTER_ID to characterId)
+        launchActivityWithExtras(CharacterDetailActivity::class.java, params)
     }
 
     //MARK: - Public methods
