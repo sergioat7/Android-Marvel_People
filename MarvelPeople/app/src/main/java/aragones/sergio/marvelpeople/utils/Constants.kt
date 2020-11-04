@@ -5,6 +5,13 @@
 
 package aragones.sergio.marvelpeople.utils
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.view.inputmethod.InputMethodManager
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -33,7 +40,9 @@ class Constants {
 
             val timestamp = System.currentTimeMillis().toString()
             val string = timestamp + PRIVATE_KEY + PUBLIC_KEY
-            val hash = MessageDigest.getInstance("MD5").digest(string.toByteArray(UTF_8)).joinToString("") { "%02x".format(it) }
+            val hash = MessageDigest.getInstance("MD5").digest(string.toByteArray(UTF_8)).joinToString(
+                ""
+            ) { "%02x".format(it) }
 
             val queryParams: MutableMap<String, String> = HashMap()
             queryParams["apikey"] = PUBLIC_KEY
@@ -41,6 +50,36 @@ class Constants {
             queryParams["hash"] = hash
 
             return queryParams
+        }
+
+        // MARK: - Character list
+
+        const val IMAGE_CORNER = 40.0F;
+
+        fun getRoundImageView(
+            image: Drawable,
+            context: Context,
+            radius: Float
+        ): RoundedBitmapDrawable? {
+
+            val imageBitmap = (image as BitmapDrawable).bitmap
+            val imageDrawable = RoundedBitmapDrawableFactory.create(context.resources, imageBitmap)
+            imageDrawable.isCircular = true
+            if (radius > 0) {
+                imageDrawable.cornerRadius = radius
+            } else {
+                imageDrawable.cornerRadius = imageBitmap.width.coerceAtLeast(imageBitmap.height) / 2.0f
+            }
+            return imageDrawable
+        }
+
+        fun hideSoftKeyboard(activity: Activity) {
+
+            activity.currentFocus?.let { currentFocus ->
+
+                val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+            } ?: return
         }
     }
 }
