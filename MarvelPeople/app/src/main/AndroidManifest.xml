@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MarvelPeople">
-        <activity android:name=".activities.CharacterDetailActivity" />
+        <activity
+            android:name=".activities.CharacterDetailActivity"
+            android:parentActivityName=".activities.MainActivity"
+            />
         <activity
             android:name=".activities.MainActivity"
             android:launchMode="singleTask">

@@ -5,8 +5,8 @@
 
 package aragones.sergio.marvelpeople.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import aragones.sergio.marvelpeople.R
 import aragones.sergio.marvelpeople.fragments.CharacterDetailFragment
 import aragones.sergio.marvelpeople.utils.Constants
@@ -16,6 +16,9 @@ class CharacterDetailActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.character_detail_activity)
+
+        title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val characterId = intent.getIntExtra(Constants.CHARACTER_ID, 0)
         val characterDetailFragment = CharacterDetailFragment.newInstance()
